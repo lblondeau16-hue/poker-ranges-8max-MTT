@@ -73,7 +73,9 @@ Dashboard interactif (Power BI — matrice 13×13, slicers)
 
 ## Aperçu
 
-*(placeholder — insérer ici un screenshot du dashboard Power BI ou de la matrice 13×13)*
+<img width="1303" height="737" alt="image" src="https://github.com/user-attachments/assets/554bdc30-3440-4493-a0de-f52c04f47a78" />
+
+<img width="1305" height="738" alt="image" src="https://github.com/user-attachments/assets/29556546-6d43-4c47-9745-38b26f16cf0c" />
 
 ## Méthodologie et hypothèses
 
