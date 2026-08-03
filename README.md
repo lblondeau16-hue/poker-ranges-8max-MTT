@@ -1,18 +1,41 @@
-# poker-ranges-8max-MTT
-Ranges poker 8max MTT : extraction d'un PDF de ranges MTT par pixel-parsing, complété par des positions approximées et documentées (SB, défense BB). Modélisation avec hypothèses explicites, contrôles qualité SQL (CTE, window functions) pour arbitrer bug vs choix stratégique, dashboard Power BI interactif (matrice 13×13).
+# Analyse de ranges préflop MTT — pipeline extraction → modélisation → QA → dashboard
 
 ## Contexte
 
 Ce projet part d'un PDF de ranges d'ouverture préflop en tournoi (8-max, 4 profondeurs
-de tapis, 5 positions) et le transforme en un jeu de données exploitable :
+de tapis, 5 positions) et le transforme en un jeu de données exploitable pour l'analyse :
 extraction automatisée du PDF, complétion des positions manquantes par approximation
-documentée, ajout de paramètres contextuels (agressivité de la table, bulle à venir, vitesse
+documentée, ajout de paramètres contextuels (agressivité de table, bulle à venir, vitesse
 de blindes, structure de payout), puis exploration en Python, contrôles qualité en SQL,
 et restitution interactive dans Power BI.
+
+Le CSV final compte **243 360 lignes**, résultat de la combinatoire complète du modèle :
+169 mains de départ × 10 positions (5 d'ouverture + 5 de défense BB) × 4 profondeurs de
+tapis × 3 niveaux d'agressivité de table × 2 modalités de bulle × 3 vitesses de blindes
+× 2 structures de payout. Chaque ligne représente donc une décision préflop unique
+(une main, dans un contexte de jeu précis) plutôt qu'une observation brute — c'est un
+jeu de données entièrement dérivé, pas collecté.
 
 L'objectif n'est pas de produire une stratégie poker parfaite, mais de démontrer un
 pipeline de données complet — de la donnée brute non structurée jusqu'à la détection
 argumentée d'anomalies.
+
+## Pertinence et cas d'usage
+
+Le dashboard Power BI est pensé comme un outil d'aide à la décision préflop, avec une
+pertinence qui dépend fortement du niveau de jeu visé :
+
+- **Aux micro-limites**, cet outil a une vraie valeur pratique : la majorité des joueurs
+  à ces stakes jouent des ranges intuitives, peu structurées, sans référence claire par
+  position/profondeur/contexte. Un outil qui reste plus proche de la théorie que la
+  norme du field, même construit à partir d'approximations documentées, constitue un
+  avantage exploitable.
+- **Au-delà des micro-limites**, la pertinence diminue mécaniquement : les joueurs de
+  ce niveau construisent déjà leurs ranges à partir de solveurs (GTO Wizard, PioSolver...),
+  comprennent mieux les ajustements fins (blockers, fréquences mixtes, exploitation
+  situationnelle) que ne le permet ce modèle. Cet outil n'a pas vocation à rivaliser
+  avec une sortie de solveur — voir la section Limites connues pour le détail de ce
+  qui sépare les deux.
 
 ## Ce que ce projet démontre
 
@@ -50,21 +73,7 @@ Dashboard interactif (Power BI — matrice 13×13, slicers)
 
 ## Aperçu
 
-PDF : 
-<img width="910" height="657" alt="image" src="https://github.com/user-attachments/assets/746a49a4-0349-4e55-92e6-10a361228d24" />
-
-CSV structuré :
-<img width="1862" height="405" alt="image" src="https://github.com/user-attachments/assets/0ca6c050-083c-4098-ac9d-405b6b6f5bc8" />
-
-Analyse exploratoire :
-<img width="1102" height="758" alt="image" src="https://github.com/user-attachments/assets/9fc68d3b-8fca-44fd-b247-03f2c981bfb2" />
-
-Contrôles qualité et cohérence poker : 
-<img width="1105" height="708" alt="image" src="https://github.com/user-attachments/assets/275ce6ed-db61-4a86-8e43-2059033a3f48" />
-
-Power BI : 
-<img width="1287" height="727" alt="image" src="https://github.com/user-attachments/assets/c49d6235-f4bc-4efd-82d5-da8e30cd6378" />
-<img width="1290" height="727" alt="image" src="https://github.com/user-attachments/assets/7e66e3f5-4b86-45e4-9c08-ca4ad215f5fa" />
+*(placeholder — insérer ici un screenshot du dashboard Power BI ou de la matrice 13×13)*
 
 ## Méthodologie et hypothèses
 
@@ -115,18 +124,7 @@ Ce projet documente volontairement ses propres défauts plutôt que de les masqu
 - Modéliser une stratégie de limp pour la SB
 - Publier un lien Power BI Service public
 
-## Structure du dépôt
-
-```
-poker-ranges-analysis/
-README.md
-V2_ranges_mtt_8max_enrichi.csv : trop large pour upload github
-RangesPierreCalamusa_FR.pdf : trop large pour upload github
-Analyse CSV ranges 8max MTT.ipynb
-Ranges_MTT_8max.pbix
-limites_et_hypotheses.md
-```
-
 ## Stack technique
 
-Python (pandas, matplotlib, seaborn) · SQL (DuckDB) · Power BI 
+Python (pandas, matplotlib, seaborn) · SQL (DuckDB) · Power BI · extraction PDF
+(pdftoppm, classification de couleurs par pixel)
