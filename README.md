@@ -119,17 +119,12 @@ Ce projet documente volontairement ses propres défauts plutôt que de les masqu
 
 ```
 poker-ranges-analysis/
-├── README.md
-├── data/
-│   └── V2_ranges_mtt_8max_enrichi.csv
-├── pdf/
-│   └── RangesPierreCalamusa_FR.pdf
-├── notebooks/
-│   └── Analyse CSV ranges 8max MTT.ipynb
-├── powerbi/
-│   └── Ranges_MTT_8max.pbix
-└── docs/
-    └── limites_et_hypotheses.md
+README.md
+V2_ranges_mtt_8max_enrichi.csv : trop large pour upload github
+RangesPierreCalamusa_FR.pdf : trop large pour upload github
+Analyse CSV ranges 8max MTT.ipynb
+Ranges_MTT_8max.pbix
+limites_et_hypotheses.md
 ```
 
 ## Stack technique
